@@ -1,9 +1,32 @@
 
 let button = document.getElementById("Button1");
+let div = document.getElementById("stupid")
 
 button.addEventListener("click", function() {
-    let loanAmount = Number(prompt("Loan Amount: "));
-    let downPaymentPercent = loanAmount * Number(prompt("Down Payment Percent: "))
+    let loanAmount = NaN;
+    while (true) {
+        try {
+            loanAmount = Number(prompt("Loan Amount: "))
+            if (loanAmount !== NaN) {
+                break;
+            }
+        } catch(error) {
+
+        }
+    }
+    let downPaymentPercent = NaN
+    while (true) {
+        try {
+        downPaymentPercent = (loanAmount * Number(prompt("Down Payment Percent: "))) / 100
+        if (downPaymentPercent !== NaN) {
+            break;
+        }
+    } catch(error) {
+
+    }
+    }
+    
+   
     let interestRate = 0.0575;
 
     let termYears = Number(prompt("Either 30 or 15: "))
@@ -15,40 +38,37 @@ button.addEventListener("click", function() {
 
     let e1 = document.createElement("p");
     e1.textContent = "Mortgage term in years: " + termYears;
-    document.body.appendChild(e1);
+    div.appendChild(e1);
 
     let e2 = document.createElement("p");
     e2.textContent = "Mortgage interest rate: " + interestRate;
-    document.body.appendChild(e2);
+    div.appendChild(e2);
 
     let e3 = document.createElement("p");
     e3.textContent = "Mortgage Amount: " + (loanAmount + interestRate);
-    document.body.appendChild(e3);
+    div.appendChild(e3);
 
     let e4 = document.createElement("p");
     e4.textContent = "Total Interest: " + ((monthlyPayment * termYears * 12) - loanAmount);
-    document.body.appendChild(e4);
+    div.appendChild(e4);
 
     let e5 = document.createElement("p");
     e5.textContent = "Total Mortgage Amount: " + (loanAmount + interestRate);
-    document.body.appendChild(e5);
+    div.appendChild(e5);
 
     let month = 0;
-    while (month <= (15000)) { // (termYears * 12)
+    while (month <= (termYears * 12)) { // (termYears * 12)
         month += 1;
-        if (month % termYears != 0) {
-            continue
-        }
         let e6 = document.createElement("p");
         let r = (interestRate/12)
-        let monthlyLoanBalance = ((loanAmount * r) / (1 - (1+r)**(-month)))
+        let monthlyLoanBalance = (loanAmount * Math.pow(1+r, month)) - (Math.pow(1+r, month) - 1)/r * monthlyPayment
         e6.textContent = `Month ${month} loan amount: $` + (monthlyLoanBalance).toFixed(2);
-        document.body.appendChild(e6);
+        div.appendChild(e6);
 
         if (monthlyLoanBalance <= 0 ) {
             let e7 = document.createElement("p");
             e7.textContent = "This is the Ending Amortization Calculator..."
-            document.body.appendChild(e7);
+            div.appendChild(e7);
             break
         }
     }
